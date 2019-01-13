@@ -1,0 +1,1001 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="新媒体," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="今天打算设置个微博粉丝平台的机器人自动回复，之前曾为微信公众号弄了个机器人，由于微信公众号的第三方很多，比如微之家、图灵机器人等等，设置自动回复只需将当前公众号绑定到相应后台，甚至都不需要了解任何接口信息即可完成配置。但是微博机器人开发者平台任何人都可以开启，无论你是大V还是普通用户，只是接口权限开放的多少而已。不过对于私信回复，这是都有的权限，因此不用在意是不是加V用户的问题。
+
+这篇文章面向任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微博私信机器人实现">
+<meta property="og:url" content="http://lukeyliu.com/2016/11/01/robot_for_weibo_chat_/index.html">
+<meta property="og:site_name" content="半个码农">
+<meta property="og:description" content="今天打算设置个微博粉丝平台的机器人自动回复，之前曾为微信公众号弄了个机器人，由于微信公众号的第三方很多，比如微之家、图灵机器人等等，设置自动回复只需将当前公众号绑定到相应后台，甚至都不需要了解任何接口信息即可完成配置。但是微博机器人开发者平台任何人都可以开启，无论你是大V还是普通用户，只是接口权限开放的多少而已。不过对于私信回复，这是都有的权限，因此不用在意是不是加V用户的问题。
+
+这篇文章面向任">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-a2079d2d69b60f37.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-9a72a8a808b97408.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-74f8c95d5e672769.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-11dddb97ca5a52dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-0c3410e2b6ebffa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-d012c2ae297a5887.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-45a1596e52b1c137.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-acf862b2863216e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-e332cb27cd1c1521.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-b40719e6378d64d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-297c54b9322be49d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-9e512b1f5caa7f17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-04-01T04:39:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微博私信机器人实现">
+<meta name="twitter:description" content="今天打算设置个微博粉丝平台的机器人自动回复，之前曾为微信公众号弄了个机器人，由于微信公众号的第三方很多，比如微之家、图灵机器人等等，设置自动回复只需将当前公众号绑定到相应后台，甚至都不需要了解任何接口信息即可完成配置。但是微博机器人开发者平台任何人都可以开启，无论你是大V还是普通用户，只是接口权限开放的多少而已。不过对于私信回复，这是都有的权限，因此不用在意是不是加V用户的问题。
+
+这篇文章面向任">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1378903-a2079d2d69b60f37.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lukeyliu.com/2016/11/01/robot_for_weibo_chat_/"/>
+
+
+
+
+
+  <title> 微博私信机器人实现 | 半个码农 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">半个码农</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">正在努力成为一个码农</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lukeyliu.com/2016/11/01/robot_for_weibo_chat_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘 琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半个码农">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                微博私信机器人实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-01T13:35:43+08:00">
+                2016-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/新媒体运营/" itemprop="url" rel="index">
+                    <span itemprop="name">新媒体运营</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/11/01/robot_for_weibo_chat_/" class="leancloud_visitors" data-flag-title="微博私信机器人实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天打算设置个微博粉丝平台的机器人自动回复，之前曾为微信公众号弄了个机器人，由于微信公众号的第三方很多，比如<a href="https://www.iweizhijia.com/" target="_blank" rel="external">微之家</a>、<a href="http://www.tuling123.com/" target="_blank" rel="external">图灵机器人</a>等等，设置自动回复只需将当前公众号绑定到相应后台，甚至都不需要了解任何接口信息即可完成配置。但是微博机器人开发者平台<strong>任何人都可以开启</strong>，无论你是大V还是普通用户，只是接口权限开放的多少而已。不过对于私信回复，这是都有的权限，因此不用在意是不是加V用户的问题。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-a2079d2d69b60f37.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微博私信机器人"></p>
+<p>这篇文章面向任何用户，说明实现方法，不讨论代码内容，因此，只要按照相应步骤完成，你的微博都可以变成机器人啦！我的微博id是 <strong><a href="http://www.weibo.com/happy91678" target="_blank" rel="external">刘奇1993</a></strong>，欢迎来挑逗。</p>
+<h2 id="图灵机器人"><a href="#图灵机器人" class="headerlink" title="图灵机器人"></a><a href="http://www.tuling123.com/" target="_blank" rel="external">图灵机器人</a></h2><p>图灵机器人是智能机器人的一个第三方平台，是一个免费的智能机器人平台。在之前我使用它在微信公众号上，现在依旧使用它完成微博机器人操作。当然它的功能你可以用在任何地方，使用相应的sdk更可以开发一个app，我们先来看看怎么操作。</p>
+<p>首先注册一个账号，然后创建一个机器人。每个人能够创建5个机器人，微信、QQ机器人能够在上面直接关联，在此我们创建一个自定义类型。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-9a72a8a808b97408.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建机器人"></p>
+<p>创建完成后，就可以完善机器人相应的信息了，比如机器人的名字，爸爸是谁，妈妈是谁……最下面有一个<strong>接入</strong>。<strong>注意，我们要的信息都在这里</strong>，你可以先保存上面的信息，当然上面也可以为你的机器人开启一些功能，稍后我们回来使用这里的信息。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-74f8c95d5e672769.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="接入"></p>
+<h2 id="微博开放平台"><a href="#微博开放平台" class="headerlink" title="微博开放平台"></a><a href="http://open.weibo.com" target="_blank" rel="external">微博开放平台</a></h2><p>在微博开放平台上，我们需要创建一个应用。微博开放平台直接使用微博账号登录即可，在创建应用之前，你需要实名验证，这个审核会花些时间。不过再慢总会完成的，还是先看创建应用。</p>
+<p>点击上面的微连接-&gt;创建应用。给自己的应用取一个应用名称，应用分类选择 <strong>网页应用</strong>。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-11dddb97ca5a52dc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建应用"></p>
+<p>创建完成后完善相应信息即可。当然我们的项目不需要上线，也没必要审核，后面的icon什么的也没必要填。</p>
+<p>这里有一些数据我们要看一下，这些是稍后会用到的数据。<strong>App Key</strong>和<strong>App Secret</strong>。至于后面的<strong>应用地址</strong>填什么，这个先放一下，稍后再第三步会生成。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-0c3410e2b6ebffa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="应用基本信息"></p>
+<h2 id="新浪云SAE"><a href="#新浪云SAE" class="headerlink" title="新浪云SAE"></a><a href="http://t.cn/RtQ5X8r" target="_blank" rel="external">新浪云SAE</a></h2><p>这一步是代码托管，看到代码两个字你是不是慌了？不过不用担心，我会把代码给你，只要你部署到上面就行了。如果你也是一个程序员，你也可以根据相应的接口完善更多的功能。</p>
+<p>当然，你也可以使用<a href="http://developer.baidu.com/bae" target="_blank" rel="external">百度BAE</a>做代码托管</p>
+<p>在使用SAE时也是要进行实名认证的，在之后即可创建应用。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-d012c2ae297a5887.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建应用"></p>
+<blockquote>
+<p>创建一个应用<br>开发语言 php （因为我的代码是php的）<br>运行环境 标准环境<br>版本 5.3<br>代码管理 svn （git也可以）</p>
+</blockquote>
+<p>下面的信息就可以自己填了，不如我这个CallbackDemo。完成后右侧创建应用，创建版本写1即可。</p>
+<p>注意这个链接，这个后面会用上。还记得第二步微博开放平台有个<strong>应用地址</strong>没有填么，对，就是填这个。填好后确定即可。好了，微博开放平台的内容完成了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-45a1596e52b1c137.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="代码管理"></p>
+<p>接下来就可以上传代码了，点击应用，选择左侧的代码管理。这里就会看到刚才创建的这个版本的信息，点击右侧的上传代码包。不过在此之前，你需要下载一下这份代码。</p>
+<p><a href="https://github.com/KeyLiu/CallbackDemo" target="_blank" rel="external">下载链接(顺便点个star,谢谢)</a>，进去后点击download即可，下载完成后使用记事本打开index.php，这里需要填写一些信息，不用担心，就是刚才让你注意的那些key。</p>
+<p>此处在**处填写第二步微博开放平台的APP SECRET</p>
+<pre><code>//设置app_key对应的app_secret
+define(&quot;APP_SECRET&quot;, &quot;**&quot;);
+</code></pre><p>在此处将**改写为图灵机器人（第一步）上的apiKey，apiURL不用更改。</p>
+<pre><code>//图灵API
+$apiKey = &quot; **&quot;;
+$apiURL = &quot;http://www.tuling123.com/openapi/api?key=KEY&amp;info=INFO&quot;;
+</code></pre><p>改写完之后将两个文件<strong>压缩成zip</strong>，上传代码包即可。【<strong>注意</strong>】，在压缩时候<strong>不要压缩整个包文件（CallbackDemo-master）</strong>，将里面的<strong>两个php文件单独压缩</strong>。这个问题会在最后的<strong>问题与解决</strong>中说明。</p>
+<h2 id="微博粉丝服务"><a href="#微博粉丝服务" class="headerlink" title="微博粉丝服务"></a>微博粉丝服务</h2><p>经过前面一系列的设置，我们基本的操作已经做完了，下面只需要在粉丝平台上设置一下即可。</p>
+<p>微博粉丝平台在主页中的管理中心，打开粉丝服务即可看到。开启开发者中心时需要关闭<strong>自动回复</strong>和<strong>自定义菜单</strong>功能，不过也不必担心关闭了这两个功能该怎么办，因为任何功能都可以通过代码来实现。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-acf862b2863216e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微博粉丝平台"></p>
+<p>在微博开发者中心中需要填写两个</p>
+<blockquote>
+<p>URL：填写第三步中的连接（.applinzi.com后缀，不包含版本号）<br>APPKEY：第二步微博开放平台的app key（9位数字）</p>
+</blockquote>
+<p>点击保存，一切配置成功。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-e332cb27cd1c1521.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="你已成为开发者"></p>
+<p>快发条微博，再发个朋友圈，让你的好友来挑逗你吧！！</p>
+<h2 id="问题及解决"><a href="#问题及解决" class="headerlink" title="问题及解决"></a>问题及解决</h2><p>有朋友在照着上面教程使用时，在微博开发者平台上点击确认出现这个页面。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-b40719e6378d64d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="问题"></p>
+<p>可能你会很担心是不是哪里配置错了，不用担心，这个问题出现的原因是微博首次验证url时会有<code>&#39;echostr&#39;</code>参数，后续推送消息时不再有<code>&#39;echostr&#39;</code>字段，若存在<code>&#39;echostr&#39;</code>说明是首次验证,则返回<code>&#39;echostr&#39;</code>的内容。简单地说就是找不到入口文件index.php</p>
+<p>出现这个原因的问题在于代码这一块，也许你从github（就是下载代码那个网址）上下载的是一个文件包，在压缩的时候不要将这个问价包压缩，只选出文件包中的两个文件单独压缩。这样上传时候index.php会在根文件下。</p>
+<p>当然如果你已经上传了怎么办？两种方法：</p>
+<ul>
+<li><p>1.点击编辑代码，在那里新建这两个文件，再将原有包删除。因为现在这有两个文件，没有其他配置文件，所以这样的本方法也是可行的。</p>
+</li>
+<li><p>2.在构建一个版本 2，然后重新上传代码。</p>
+</li>
+</ul>
+<p>当然无论你用哪种方法，相信最后都会成功的！！为什么，因为来源一个程序员的自信，哈哈，更要补充一句，<strong>PHP是世界上最好的语言！！</strong></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>让我们来玩点更好玩的东西吧。有问问我好友<strong>关注自动回复</strong>怎么办？因为已经关闭了自动回复的功能。这个问题我也想过，本打算再把代码完善一下，加上这块的功能。可是当我是试验时发现是有回复的，是在关注时发送了一个“XX订阅”机器人嗅到这个关键词会回复。那我们就用这个关键词设置好了。</p>
+<p>打开图灵机器人，在<strong>聪慧度</strong>那里关键字设置为 订阅，回复就是你要设置的话。<br><img src="http://upload-images.jianshu.io/upload_images/1378903-297c54b9322be49d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="设置关注回复"></p>
+<p>然后就大功告成了！！</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-9e512b1f5caa7f17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="感谢关注 刘奇1993"></p>
+<p>还有什么好玩的有趣的建议请留言或者私信（简书这个私信没有机器人啦），我们一起探讨。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/新媒体/" rel="tag"># 新媒体</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/20/iOS_issues_2/" rel="next" title="iOS 开发中遇到的问题（服务端篇）">
+                <i class="fa fa-chevron-left"></i> iOS 开发中遇到的问题（服务端篇）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/20/iOS_screen_cut_2/" rel="prev" title="iOS截图（2）生成长图">
+                iOS截图（2）生成长图 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div onclick="ShowGitment()" id="gitment-display-button">显示精彩评论</div>
+         <div id="gitment-container" style="display:none"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="刘 琦" />
+          <p class="site-author-name" itemprop="name">刘 琦</p>
+           
+              <p class="site-description motion-element" itemprop="description">写写代码，聊聊生活</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">博客</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KeyLiu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1692704124" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/Lukey678" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/e261bc969874" target="_blank" title="Jianshu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#图灵机器人"><span class="nav-number">1.</span> <span class="nav-text">图灵机器人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微博开放平台"><span class="nav-number">2.</span> <span class="nav-text">微博开放平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新浪云SAE"><span class="nav-number">3.</span> <span class="nav-text">新浪云SAE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微博粉丝服务"><span class="nav-number">4.</span> <span class="nav-text">微博粉丝服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题及解决"><span class="nav-number">5.</span> <span class="nav-text">问题及解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">6.</span> <span class="nav-text">补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘 琦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 提供
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+
+    
+
+   
+        <!-- UY BEGIN -->
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+        <!-- UY END -->
+    
+  
+
+
+  
+
+
+
+
+
+
+   
+   
+   
+   
+   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: document.location.href,
+                   owner: 'KeyLiu',
+                   repo: 'keyliu_gitment',
+                   oauth: {
+                       client_id: '5fde4b043660c68a3975',
+                       client_secret: '13e9746e81cefbc2f437d0dde861ed87cdd306bc',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("74eoHIMeRxoeT9OLH3Wca5oB-gzGzoHsz", "saDIOiNLRqeIGH90uCSSQtaN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

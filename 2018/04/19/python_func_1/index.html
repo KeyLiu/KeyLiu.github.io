@@ -1,0 +1,1128 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="开始陆续学习python相关知识，这一篇介绍函数式编程相关知识。在文章中会介绍三个主要的高阶函数，从基本例子入手了解函数式编程。
+map（）map 意思是映射，在数学的学习中，映射即为x与y存在的关系，即x通过一定的方法称为y。首先来看一个例子：将数组[1，2，3，4，5，6，7，8]中的元素均变为原来的2倍。
+乍一看很简单，通过一个简单的循环便可以解决。那么我们首先用这个方法解决：
+def nu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python学习笔记|函数式编程——map,filter,reduce">
+<meta property="og:url" content="http://lukeyliu.com/2018/04/19/python_func_1/index.html">
+<meta property="og:site_name" content="半个码农">
+<meta property="og:description" content="开始陆续学习python相关知识，这一篇介绍函数式编程相关知识。在文章中会介绍三个主要的高阶函数，从基本例子入手了解函数式编程。
+map（）map 意思是映射，在数学的学习中，映射即为x与y存在的关系，即x通过一定的方法称为y。首先来看一个例子：将数组[1，2，3，4，5，6，7，8]中的元素均变为原来的2倍。
+乍一看很简单，通过一个简单的循环便可以解决。那么我们首先用这个方法解决：
+def nu">
+<meta property="og:updated_time" content="2018-04-19T08:45:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python学习笔记|函数式编程——map,filter,reduce">
+<meta name="twitter:description" content="开始陆续学习python相关知识，这一篇介绍函数式编程相关知识。在文章中会介绍三个主要的高阶函数，从基本例子入手了解函数式编程。
+map（）map 意思是映射，在数学的学习中，映射即为x与y存在的关系，即x通过一定的方法称为y。首先来看一个例子：将数组[1，2，3，4，5，6，7，8]中的元素均变为原来的2倍。
+乍一看很简单，通过一个简单的循环便可以解决。那么我们首先用这个方法解决：
+def nu">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lukeyliu.com/2018/04/19/python_func_1/"/>
+
+
+
+
+
+  <title> python学习笔记|函数式编程——map,filter,reduce | 半个码农 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">半个码农</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">正在努力成为一个码农</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lukeyliu.com/2018/04/19/python_func_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘 琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半个码农">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                python学习笔记|函数式编程——map,filter,reduce
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-19T16:36:34+08:00">
+                2018-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python开发/" itemprop="url" rel="index">
+                    <span itemprop="name">python开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/19/python_func_1/" class="leancloud_visitors" data-flag-title="python学习笔记|函数式编程——map,filter,reduce">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开始陆续学习python相关知识，这一篇介绍函数式编程相关知识。在文章中会介绍三个主要的高阶函数，从基本例子入手了解函数式编程。</p>
+<h2 id="map（）"><a href="#map（）" class="headerlink" title="map（）"></a>map（）</h2><p>map 意思是映射，在数学的学习中，映射即为x与y存在的关系，即x通过一定的方法称为y。首先来看一个例子：将数组<code>[1，2，3，4，5，6，7，8]</code>中的元素均变为原来的2倍。</p>
+<p>乍一看很简单，通过一个简单的循环便可以解决。那么我们首先用这个方法解决：</p>
+<pre><code>def num2(list):
+    newList = []
+    for x in list:
+        x *= 2
+        newList.append(x)
+    return newList
+</code></pre><p>执行方法：</p>
+<pre><code>list = [1,2,3,4,5,6,7,8]
+num2(list)
+</code></pre><p>输出结果为：</p>
+<pre><code>[1,4,9,16,25,36,49,64]
+</code></pre><p>上述方法为整形，若将其扩展为字符或字符串呢，我们再来看一个例子——大小写转换。</p>
+<p>为了简单，我们只将<code>[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;]</code>转换为<code>[&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;]</code></p>
+<pre><code>def upperNum(list):
+    newList = []
+    for x in list:
+        newList.append(x[:].upper())
+    return newList
+</code></pre><p>执行函数：</p>
+<pre><code>list = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;]
+print upperNum(list)
+</code></pre><p>输出结果为：</p>
+<pre><code>[&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;]
+</code></pre><p>通过上述两个例子，你是否发现了相同点。均是一个数组中元素通过某种方法进行变换，唯一不同的是传入数组的类型与方法不同。那么，我们能否定义出这个相同点函数，将数组和方法作为参数传递进去。</p>
+<p>幸运的是，<strong>泛型</strong>在python中非常简单，这让我们无需考虑数组中变量的类型。关于泛型的讨论，在下面补充中会介绍，如果你了解其他编程语言相信一定不会陌生。</p>
+<p>而如何将函数作为参数传递进去，这便是<strong>函数式编程</strong>。</p>
+<p><strong>函数式编程</strong>就是一种抽象程度很高的编程范式，纯粹的函数式编程语言编写的函数没有变量，因此，任意一个函数，只要输入是确定的，输出就是确定的，这种纯函数我们称之为没有副作用。而允许使用变量的程序设计语言，由于函数内部的变量状态不确定，同样的输入，可能得到不同的输出，因此，这种函数是有副作用的。</p>
+<p><strong>python对函数式编程提供部分支持</strong>，既可以作为参数传递，又能返回一个函数。由于python允许使用变量，因此，<strong>python不是纯函数式编程语言</strong>。</p>
+<p>我们来定义一个map函数，其参数为<code>function</code>方法和<code>sequence</code>数组，而通过研究发现其返回值依然是是一个数组。</p>
+<pre><code>def map(function,sequence):
+    newList = []
+    for x in sequence:
+        newList.append(function(x))
+    return newList
+</code></pre><p>上述两个通过map方法便能合二为一：</p>
+<pre><code>def num2(x):
+  return x * x
+
+def upperNum(x):
+    return x[:].upper()
+
+map(num2,list)
+map(upperNum,list)
+</code></pre><p>执行结果仍然为：</p>
+<pre><code>[1,4,9,16,25,36,49,64]
+[&apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;]
+</code></pre><p><strong>注，在python2中是能够直接出来结果的，但是在python3中这个会返回一个对象。要想用到结果就必须的在前面加上<code>list</code>来转化一下</strong>，比如：</p>
+<p>在系统库中的map函数定义如下，有一个<strong>可选参数</strong>：</p>
+<pre><code>map(function, sequence, *sequence_1)
+</code></pre><p>如果给定多个序列，则函数被调用，其中包含相应的参数列表每个序列的项；当不是全部时，用<code>None</code>代替缺失值使得序列的长度相同。如果函数没有，返回一个列表序列的项(或一个数组的列表，如果不止一个序列)。</p>
+<p>例如：</p>
+<pre><code>l1 = [ 0, 1, 2, 3, 4, 5, 6 ]
+l2 = [ &apos;Sun&apos;, &apos;Mon&apos;, &apos;Tue&apos;, &apos;Wed&apos;, &apos;Thu&apos;, &apos;Fri&apos;, &apos;Sat&apos; ]
+map(f, l1, l2)
+</code></pre><p>结果为：</p>
+<pre><code>[(0, &apos;Sun&apos;), (1, &apos;Mon&apos;), (2, &apos;Tue&apos;), (3, &apos;Wed&apos;), (4, &apos;Thu&apos;), (5, &apos;Fri&apos;), (6, &apos;Sat&apos;)]
+</code></pre><p>在<strong>补充</strong>中提到一个匿名函数，对map方法仍能进行进一步的简化。</p>
+<h2 id="filter（）"><a href="#filter（）" class="headerlink" title="filter（）"></a>filter（）</h2><p>filter 意思是过滤器，即为筛选出数组或元祖中符合条件的元素。首先来看一个例子，选出1-10中的奇数：</p>
+<pre><code>def is_Odd(list):
+    newList = []
+    for x in list:
+        if x%2 :
+            newList.append(x)
+        else:
+            pass
+    return newList
+</code></pre><p>执行函数：</p>
+<pre><code>list = [1,2,3,4,5,6,7,8,9]
+is_Odd(list)
+</code></pre><p>输出结果为：</p>
+<pre><code>[1, 3, 5, 7, 9]
+</code></pre><p>再来看另一个例子，假设有一个标记文件路径的数组字符串数组<code>exampleFiles</code>赋值如下：</p>
+<pre><code>exampleFiles = [&quot;README.md&quot;, &quot;HelloWorld.py&quot;,&quot;HelloSwift.swift&quot;, &quot;HelloPython.py&quot;]
+</code></pre><p>现在我们想从数组中取出.py数组，使用一个循环便可得到：</p>
+<pre><code>def getPyFile(fileNames):
+  newFileNames = []
+  for fileName in fileNames:
+      if &quot;.py&quot; in fileName:
+         newFileNames.append(fileName)
+  return newFileNames
+</code></pre><p>执行这个函数：</p>
+<pre><code>fileNames =  [&quot;README.md&quot;, &quot;HelloWorld.py&quot;,&quot;HelloSwift.swift&quot;, &quot;HelloPython.py&quot;]
+getPyFile(fileNames)
+</code></pre><p>结果为：</p>
+<pre><code>[&apos;HelloWorld.py&apos;, &apos;HelloPython.py&apos;]
+</code></pre><p>从上述两个例子中可以得出两个方法的共同点，即返回那些函数(项)为真的序列项。如果函数是<code>None</code>，返回<code>True</code>的项，并返回一个列表。（如果序列是一个元组或者字符串，返回相同的类型）</p>
+<p>因此，有了上述map函数的基础，我们可以定义一个过滤器方法，将上述方法合二为一：</p>
+<pre><code>def filter(function,sequence):
+    list = []
+    for x in sequence:
+        if function(x):
+            list.append(x)
+    return list
+</code></pre><p>以筛选文件为例，执行这个方法：</p>
+<pre><code>def getPyFile2(fileName):
+  if &quot;.py&quot; in fileName:
+       return fileName
+   else:
+       pass
+
+filter(getPyFile2,fileNames)
+</code></pre><p>执行这个函数，结果为：</p>
+<pre><code>[&apos;HelloWorld.py&apos;, &apos;HelloPython.py&apos;]
+</code></pre><p>与map相同，<strong>在python3中filter函数返回的是一个对象，需要加<code>list</code>转换成数组</strong>。</p>
+<h2 id="reduce（）"><a href="#reduce（）" class="headerlink" title="reduce（）"></a>reduce（）</h2><p>reduce意思是聚合，有了map和filter函数的研究基础，我们同样先来讨论一个简单的函数，定义一个函数计算数组中所有整数的和。</p>
+<p>python函数库中虽然自带有sum（）函数，但我们仍自定义函数解决</p>
+<pre><code>def sum(list):
+    result = 0
+    for x in list:
+        result += x
+    return result
+</code></pre><p>执行函数：</p>
+<pre><code>list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+sum(list)
+</code></pre><p>结果为：</p>
+<pre><code>45
+</code></pre><p>再来看另外一个例子：数以一组单词，将其拼成一个句子。例如将数组<code>[&quot;I&quot;,&quot;am&quot;,&quot;a&quot;,&quot;good&quot;,&quot;boy&quot;]</code>拼接成一个字符串<code>&quot;I am a good boy&quot;</code></p>
+<p>定义函数如下：</p>
+<pre><code>def append(list):
+    result = &quot;&quot;
+    for x in list:
+        result = result + x+&quot; &quot;
+    return result
+</code></pre><p>执行函数：</p>
+<pre><code>list = [&quot;I&quot;,&quot;am&quot;,&quot;a&quot;,&quot;good&quot;,&quot;boy&quot;]
+append(list)
+</code></pre><p>结果为：</p>
+<pre><code>&quot;I am a good boy &quot;
+</code></pre><p>分析上面两个函数相同的地方，它们都用一些值初始化了一个变量<code>result</code>，它们进行处理的时候都遍历了整个数组<code>list</code>，并通过某种算法更新<code>result</code>。要定义实现这种通用算法的一个通用函数，有两处需要进行抽象：<code>result</code>的初始值以及在每个循环中用于更新<code>result</code>值的函数。</p>
+<p>因此我们可以定义一个函数函数满足上述需求，注意reduce函数最终返回的是一个value值而非数组：</p>
+<pre><code>def reduce(function,sequence):
+    result = None
+    for x in sequence:
+        result = function(result,x)
+    return result
+</code></pre><p>其中<code>function</code>为需要操作的函数，<code>sequence</code>为数组，将<code>result</code>与<code>sequence</code>中元素操作后值赋予<code>result</code>，进行循环操作。</p>
+<p>执行上述函数操作便得以简化：</p>
+<pre><code>def sum(a,b):
+    return  a + b
+
+def append(a,b):
+    return  a + &quot; &quot; + b
+
+reduce(sum,list)
+reduce(append,list)
+</code></pre><p>这我们得出所需要的reduce函数。在系统中的reduce定义为 <code>reduce(function,sequence,initial=None)</code>，由于初值并非只有0或空字符串，可以为任意，因此需要赋初值，在这里给予一个初值变量并默认初值。将上述reduce函数改编为：</p>
+<pre><code>def reduce(function,sequence,initial=None):
+    result = initial
+    for x in sequence:
+        result = function(result,x)
+    return result
+</code></pre><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h3><p>在Python中，对匿名函数提供了有限支持。还是以map()函数为例，计算f(x)=x2时，需定义一个f(x)的函数，然后使用map函数，如：</p>
+<pre><code>def f(x):
+  return x * x
+
+list(map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+</code></pre><p>输出结果为：</p>
+<pre><code>[1, 4, 9, 16, 25, 36, 49, 64, 81]
+</code></pre><p>使用匿名函数，便能用一行解决：</p>
+<pre><code>list(map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+</code></pre><p>输出结果同样为：</p>
+<pre><code>[1, 4, 9, 16, 25, 36, 49, 64, 81]
+</code></pre><p>从上述例子可以看到，匿名函数关键字为<code>lambda</code>，冒号前面的<code>x</code>表示函数参数。匿名函数有个限制，就是只能有一个<em>表达式</em>，不用写<code>return</code>，返回值就是该表达式的结果。</p>
+<p>用匿名函数有个好处，因为函数没有名字，不必担心函数名冲突。此外，匿名函数也是一个<em>函数对象</em>，也可以把匿名函数赋值给一个变量，再利用变量来调用该函数，例如：</p>
+<pre><code>f = lambda x: x * x
+f(5)
+</code></pre><p>结果为：</p>
+<pre><code>25
+</code></pre><p>因此，上述几段程序使用匿名函数便能简化很多：</p>
+<pre><code>filter(lambda fileName:&quot;.py&quot; in fileName,fileNames)
+reduce(lambda a, b: a + b,list)
+reduce(lambda a, b: a + &quot; &quot; +b,list)
+</code></pre><h3 id="sorted函数"><a href="#sorted函数" class="headerlink" title="sorted函数"></a>sorted函数</h3><p>将函数作为参数可不仅仅上述几个函数，比如sorted函数，顾名思义为排序，使用起来也很简单。</p>
+<pre><code>sorted([36, 5, -12, 9, -21])
+[-21, -12, 5, 9, 36]
+</code></pre><p>在系统中，sort函数的定义为：</p>
+<pre><code>def sorted(iterable, cmp=None, key=None, reverse=False)
+</code></pre><p>其高阶在于后面的三个参数。reverse参数是一个bool变量，是否倒序，默认值为False（正序）。key是关键字，是用于排序的对象。在上个例子中为数组本身，当然也可以对数组的个位数进行排序，如：</p>
+<pre><code>sorted([36, 5, 12, 9, 21],key=lambda x:x%10)
+[21, 12, 5, 36, 9]
+</code></pre><p>cmp参数是比较的方法，加入我们要实现倒序而不是用reverse，可以这样写：</p>
+<pre><code>sorted([36, 5, -12, 9, -21],cmp=lambda x,y:cmp(x,y))
+[-21, -12, 5, 9, 36]
+</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>作为本文的结束，给出一个小例子供大家理解三个函数。（题目来源于 objc.io出版的《函数式编程》）</p>
+<p>有一组城市和人口数据如下：</p>
+<pre><code>name: &quot;Paris&quot;, population: 2243
+name: &quot;Madrid&quot;, population: 3216
+name: &quot;Amsterdam&quot;, population: 811
+name: &quot;Berlin&quot;, population: 3397
+</code></pre><p>假如我们想要找出至少有1百万人口的城市并打印出它们的城市名和人口，输出结果为：</p>
+<pre><code>City: Population
+Paris : 2243000
+Madrid : 3216000
+Berlin : 3397000
+</code></pre><p>首先我们过滤掉小于100万人口的城市。然后使用<code>map</code>函数进行影射，将城市人口的单位进行转换。最后，我们使用<code>reduce</code>通过城市名和人口的列表计算得出一个字符串。这里我们使用了标准库的<code>map</code>,<code>filter</code>和<code>reduce</code>函数。结果，我们可以像链条一样将这些函数串起来。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/25/postgrade_2/" rel="next" title="考研记2|备考杂谈，生命中最热血的时光">
+                <i class="fa fa-chevron-left"></i> 考研记2|备考杂谈，生命中最热血的时光
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/28/postgrade_3/" rel="prev" title="考研记3|不再犹豫">
+                考研记3|不再犹豫 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div onclick="ShowGitment()" id="gitment-display-button">显示精彩评论</div>
+         <div id="gitment-container" style="display:none"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="刘 琦" />
+          <p class="site-author-name" itemprop="name">刘 琦</p>
+           
+              <p class="site-description motion-element" itemprop="description">写写代码，聊聊生活</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">博客</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KeyLiu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1692704124" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/Lukey678" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/e261bc969874" target="_blank" title="Jianshu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#map（）"><span class="nav-number">1.</span> <span class="nav-text">map（）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filter（）"><span class="nav-number">2.</span> <span class="nav-text">filter（）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduce（）"><span class="nav-number">3.</span> <span class="nav-text">reduce（）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名函数"><span class="nav-number">4.1.</span> <span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sorted函数"><span class="nav-number">4.2.</span> <span class="nav-text">sorted函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">5.</span> <span class="nav-text">练习</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘 琦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 提供
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+
+    
+
+   
+        <!-- UY BEGIN -->
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+        <!-- UY END -->
+    
+  
+
+
+  
+
+
+
+
+
+
+   
+   
+   
+   
+   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: document.location.href,
+                   owner: 'KeyLiu',
+                   repo: 'keyliu_gitment',
+                   oauth: {
+                       client_id: '5fde4b043660c68a3975',
+                       client_secret: '13e9746e81cefbc2f437d0dde861ed87cdd306bc',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("74eoHIMeRxoeT9OLH3Wca5oB-gzGzoHsz", "saDIOiNLRqeIGH90uCSSQtaN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

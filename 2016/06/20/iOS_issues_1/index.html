@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在项目开发中，自己遇到一些问题及解决方法，不断更新中。
+（1）UINavigationBar和UITabBar上有一条横线，是ShadowImage，默认是黑色的。在项目开发中，可以改变其图片和颜色。在下图个人热点图中可以看到导航栏下面的黑线。
+[self.navigationController.navigationBar  setShadowImage:[UIImage imageWithCo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 开发中遇到的问题（客户端篇）">
+<meta property="og:url" content="http://lukeyliu.com/2016/06/20/iOS_issues_1/index.html">
+<meta property="og:site_name" content="半个码农">
+<meta property="og:description" content="在项目开发中，自己遇到一些问题及解决方法，不断更新中。
+（1）UINavigationBar和UITabBar上有一条横线，是ShadowImage，默认是黑色的。在项目开发中，可以改变其图片和颜色。在下图个人热点图中可以看到导航栏下面的黑线。
+[self.navigationController.navigationBar  setShadowImage:[UIImage imageWithCo">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-62f36dcf60de92ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-663bc7864fb0232c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-04085d05a935237d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-1ac77248ed32466a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-a5e9f18b3c6ae08b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-ff5f3eaffaff7d3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-04-17T02:51:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 开发中遇到的问题（客户端篇）">
+<meta name="twitter:description" content="在项目开发中，自己遇到一些问题及解决方法，不断更新中。
+（1）UINavigationBar和UITabBar上有一条横线，是ShadowImage，默认是黑色的。在项目开发中，可以改变其图片和颜色。在下图个人热点图中可以看到导航栏下面的黑线。
+[self.navigationController.navigationBar  setShadowImage:[UIImage imageWithCo">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1378903-62f36dcf60de92ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lukeyliu.com/2016/06/20/iOS_issues_1/"/>
+
+
+
+
+
+  <title> iOS 开发中遇到的问题（客户端篇） | 半个码农 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">半个码农</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">正在努力成为一个码农</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lukeyliu.com/2016/06/20/iOS_issues_1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘 琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半个码农">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS 开发中遇到的问题（客户端篇）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-20T12:58:05+08:00">
+                2016-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/06/20/iOS_issues_1/" class="leancloud_visitors" data-flag-title="iOS 开发中遇到的问题（客户端篇）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在项目开发中，自己遇到一些问题及解决方法，不断更新中。</p>
+<p>（1）<code>UINavigationBar</code>和<code>UITabBar</code>上有一条横线，是<code>ShadowImage</code>，默认是黑色的。在项目开发中，可以改变其图片和颜色。在下图个人热点图中可以看到导航栏下面的黑线。</p>
+<pre><code>[self.navigationController.navigationBar  setShadowImage:[UIImage imageWithColor:MyColor]];
+</code></pre><p>（2） <code>statusBar</code>默认的高度是20.0f，在使用微信或者QQ通话，热点等功能进入后台时，<code>statusBar</code>的高度会变为40.0f，下方的布局也会发生变化，在此要根据<code>statusBar</code>的变化调整布局，设置监听监听其变化。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-62f36dcf60de92ba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="打开热点时`statusBar`高度变化"></p>
+<p>监听对象为<code>UIApplicationDidChangeStatusBarFrameNotification</code></p>
+<pre><code>[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(statusBarFrameWillChange:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];//添加监听
+
+[[NSNotificationCenter defaultCenter]removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];//移除监听
+</code></pre><p>当前statusBar的高度也是可以获取的：</p>
+<pre><code>NSValue *rectValue = [notification.userInfo objectForKey:UIApplicationStatusBarFrameUserInfoKey];
+  CGRect statusRect = [rectValue CGRectValue];
+    CGRect statusFrame = [self.view convertRect:statusRect fromView:[[UIApplication sharedApplication]keyWindow]];
+    CGFloat statusHeight = statusFrame.size.height;
+</code></pre><p>（3）在iPad开发时，使用iOS 9系统会出现<code>tableviewCell</code>的位置变化，在开发中默认与右侧是15个像素，可是现在明显大的多，这是因为在iOS 9后<code>tableview</code>的一个属性发生了变化。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-663bc7864fb0232c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="tableviewCell位置变化"></p>
+<p>需要调整</p>
+<pre><code>tableView.cellLayoutMarginsFollowReadableWidth = NO;
+</code></pre><p>补充，因为方法是iOS9之后出现的，因此在调用时需要判断系统是否大于9.0</p>
+<pre><code>if([UIDevice currentDevice].systemVersion.floatValue &gt;= 9.0){
+      tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+</code></pre><p>（4）在做直播功能模块，使用到 弹幕 的功能（弹幕使用第三方库<code>BarrageRenderer</code>），弹幕为横屏自动开启，竖屏时关闭。在测试用发现弹幕有时开有时关，最终发现在屏幕横放时无法显示。原因是设置方法出现错误。</p>
+<p>通过<code>[UIDevice currentDevice].orientation</code> 的状态判断横竖屏会出现错误，因为其枚举类型是<code>UIDeviceOrientation</code>，在查看其枚举类型时会发现其除了<code>Portrait</code> <code>LandscapeLeft</code> <code>LandscapeRight</code> <code>PortraitUpsideDown</code>外还有<code>FaceUp</code> <code>FaceDown</code>两个状态，忽略对其的设置会产生影响。</p>
+<p><code>UIDeviceOrientation</code> 枚举</p>
+<pre><code>typedef NS_ENUM(NSInteger, UIDeviceOrientation) {
+        UIDeviceOrientationUnknown,
+        UIDeviceOrientationPortrait,            // Device oriented vertically, home button on the bottom
+        UIDeviceOrientationPortraitUpsideDown,  // Device oriented vertically, home button on the top
+        UIDeviceOrientationLandscapeLeft,       // Device oriented horizontally, home button on the right
+        UIDeviceOrientationLandscapeRight,      // Device oriented horizontally, home button on the left
+        UIDeviceOrientationFaceUp,              // Device oriented flat, face up
+        UIDeviceOrientationFaceDown             // Device oriented flat, face down
+} __TVOS_PROHIBITED;
+</code></pre><p>在对其使用时还可以将其转换成<code>UIInterfaceOrientation</code>，因为后者只有常见的几种类型。</p>
+<pre><code>UIDeviceOrientation orientation             = [UIDevice currentDevice].orientation;
+  UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
+</code></pre><p><code>UIInterfaceOrientation</code>枚举</p>
+<pre><code>typedef NS_ENUM(NSInteger, UIInterfaceOrientation) {
+      UIInterfaceOrientationUnknown            = UIDeviceOrientationUnknown,
+      UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+      UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+      UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+      UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+} __TVOS_PROHIBITED;
+</code></pre><p>另外在横竖屏切换时我们会对屏幕的状态做监听，通常监听的是<code>UIDeviceOrientationDidChangeNotification</code>,监听得到的结果是<code>UIDeviceOrientation</code>，也可以监听<code>UIApplicationDidChangeStatusBarFrameNotification</code>，得到<code>UIInterfaceOrientation</code>。当然<code>UIApplicationDidChangeStatusBarFrameNotification</code>也可以监听热点等事件中出现的问题，如问题2.</p>
+<p>（5）引入sdk报错（非pod）</p>
+<p>_res_9_ninit”, referenced from: _setup_dns_server in QNResolver.o </p>
+<ol>
+<li>项目中需导入 libresolv.dylib或libresolv.9.dylib。(Build Phases — Link Binary With Libraries)；</li>
+<li>或 (Build Settings — Linking — Other Linker Flags) 添加 -lresolv 选项</li>
+</ol>
+<p>（6）在使用<code>tableView</code>时，使用<code>footerView</code>在最后一行默认不显示最后一条横线。简单粗暴的方法，在cell中重写<code>layoutSubviews</code>方法。</p>
+<pre><code>- (void)layoutSubviews {
+    [super layoutSubviews];
+
+      for (UIView *subview in self.contentView.superview.subviews) {
+            if ([NSStringFromClass(subview.class) hasSuffix:@&quot;SeparatorView&quot;]) {
+                  subview.hidden = NO;
+            }
+        }
+}
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/1378903-04085d05a935237d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="显示tableView最后一行横线"></p>
+<p>（7）项目中有视频缓存，使用腾讯云下载完成下载功能，于是问题就来了，相信在做视频缓存、下载功能的同行可能也会遇到这种问题。</p>
+<p>视频下载完成后，在 <em>我的缓存中</em> 查看，没有问题，但当软件更新或重新安装，视频列表还在，但视频打不开了。</p>
+<p>查看腾讯云视频成功回调，发现在返回的字典中，缓存文件的路径是完整的。如图。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-1ac77248ed32466a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看文件路径"></p>
+<p>查看文件路径并重新安装后会发现文件内容没变，但文件名变了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-a5e9f18b3c6ae08b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="重新安装前"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-ff5f3eaffaff7d3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="重新安装后"></p>
+<p>这说明，app在重新安装或升级后，会重新建一个文件，并将原来的文件全部copy过去，然后将原文件删除。</p>
+<p>知道原因之后就要解决了，当然解决的方法简单粗暴，既然是文件名，那就进行拼接和裁剪了。在<code>plist</code>文件中存储的是裁剪后的后半段路径，而读取文件路径后再拼接上<code>Caches</code>地址。</p>
+<p>获取<code>Caches</code>目录路径的方法：</p>
+<pre><code>NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+NSString *cachesDir = [paths objectAtIndex:0];
+</code></pre><p>（8）iOS给好评时一般会直接打开app store应用详情界面，其实也可以直接跳转到评论页面，更有利于引导用户打分和评论。（将下面id改成自己的app id即可）</p>
+<pre><code>[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=id1128294199&amp;pageNumber=0&amp;sortOrdering=2&amp;type=Purple+Software&amp;mt=8&quot;]];
+</code></pre><p>直接跳转到详情</p>
+<p><a href="https://itunes.apple.com/cn/app/jia-zhang-mu-ke/id1128294199?mt=8" target="_blank" rel="external">https://itunes.apple.com/cn/app/jia-zhang-mu-ke/id1128294199?mt=8</a></p>
+<p>（9）</p>
+<p>更多问题后续补充，欢迎探讨指正</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/02/wechat_for_university/" rel="next" title="高校微信公众平台运营技巧">
+                <i class="fa fa-chevron-left"></i> 高校微信公众平台运营技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/02/iOS_screen_cut_1/" rel="prev" title="iOS截图（1）生成分享图片">
+                iOS截图（1）生成分享图片 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div onclick="ShowGitment()" id="gitment-display-button">显示精彩评论</div>
+         <div id="gitment-container" style="display:none"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="刘 琦" />
+          <p class="site-author-name" itemprop="name">刘 琦</p>
+           
+              <p class="site-description motion-element" itemprop="description">写写代码，聊聊生活</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">博客</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KeyLiu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1692704124" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/Lukey678" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/e261bc969874" target="_blank" title="Jianshu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘 琦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 提供
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+
+    
+
+   
+        <!-- UY BEGIN -->
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+        <!-- UY END -->
+    
+  
+
+
+  
+
+
+
+
+
+
+   
+   
+   
+   
+   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: document.location.href,
+                   owner: 'KeyLiu',
+                   repo: 'keyliu_gitment',
+                   oauth: {
+                       client_id: '5fde4b043660c68a3975',
+                       client_secret: '13e9746e81cefbc2f437d0dde861ed87cdd306bc',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("74eoHIMeRxoeT9OLH3Wca5oB-gzGzoHsz", "saDIOiNLRqeIGH90uCSSQtaN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

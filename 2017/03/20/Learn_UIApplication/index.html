@@ -1,0 +1,1054 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在开发过程中，我们很少真正研究过这个类，很多半路出家的程序员对于view的生命周期有所了解，但对UIApplication未深入研究。在开发过程中，相信我们都或多或少的使用了其中的很多功能，下面就来探讨和总结一下其中的内容，又见iOS，就让我们从main开始，重新进入iOS的新世界。
+
+简述UIApplicationUIApplication的核心作用是提供了iOS程序运行期间的控制和协作工作。每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="又见UIApplication">
+<meta property="og:url" content="http://lukeyliu.com/2017/03/20/Learn_UIApplication/index.html">
+<meta property="og:site_name" content="半个码农">
+<meta property="og:description" content="在开发过程中，我们很少真正研究过这个类，很多半路出家的程序员对于view的生命周期有所了解，但对UIApplication未深入研究。在开发过程中，相信我们都或多或少的使用了其中的很多功能，下面就来探讨和总结一下其中的内容，又见iOS，就让我们从main开始，重新进入iOS的新世界。
+
+简述UIApplicationUIApplication的核心作用是提供了iOS程序运行期间的控制和协作工作。每">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-52490be54e457a0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1378903-c7a0ada4f511a5d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-04-01T04:57:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="又见UIApplication">
+<meta name="twitter:description" content="在开发过程中，我们很少真正研究过这个类，很多半路出家的程序员对于view的生命周期有所了解，但对UIApplication未深入研究。在开发过程中，相信我们都或多或少的使用了其中的很多功能，下面就来探讨和总结一下其中的内容，又见iOS，就让我们从main开始，重新进入iOS的新世界。
+
+简述UIApplicationUIApplication的核心作用是提供了iOS程序运行期间的控制和协作工作。每">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1378903-52490be54e457a0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lukeyliu.com/2017/03/20/Learn_UIApplication/"/>
+
+
+
+
+
+  <title> 又见UIApplication | 半个码农 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">半个码农</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">正在努力成为一个码农</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            目录
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lukeyliu.com/2017/03/20/Learn_UIApplication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘 琦">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="半个码农">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                又见UIApplication
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T13:35:43+08:00">
+                2017-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/20/Learn_UIApplication/" class="leancloud_visitors" data-flag-title="又见UIApplication">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在开发过程中，我们很少真正研究过这个类，很多半路出家的程序员对于<code>view</code>的生命周期有所了解，但对<code>UIApplication</code>未深入研究。在开发过程中，相信我们都或多或少的使用了其中的很多功能，下面就来探讨和总结一下其中的内容，又见iOS，就让我们从<code>main</code>开始，重新进入iOS的新世界。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1378903-52490be54e457a0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="应用程序生命周期"></p>
+<h2 id="简述UIApplication"><a href="#简述UIApplication" class="headerlink" title="简述UIApplication"></a>简述UIApplication</h2><p><code>UIApplication</code>的核心作用是提供了iOS程序运行期间的控制和协作工作。每一个程序在运行期必须<em>有且仅有一个</em><code>UIApplication（或则其子类）</code>的一个实例。在程序开始运行的时候，<code>UIApplicationMain</code>函数是程序进入点，这个函数做了很多工作，其中一个重要的工作就是创建一个<code>UIApplication</code>的<strong>单例</strong>实例。在你的代码中你，你可以通过调用<code>[UIApplication sharedApplication]</code>来得到这个单例实例的指针。</p>
+<p><code>UIApplication</code>的一个主要工作是处理用户事件，它会起一个队列，把所有用户事件都放入队列，逐个处理，在处理的时候，它会发送当前事件到一个合适的处理事件的目标控件。此外，<code>UIApplication</code>实例还维护一个在本应用中打开的<code>window</code>列表（<code>UIWindow实例</code>），这样它就可以接触应用中的任何一个<code>UIView</code>对象。<code>UIApplication</code>实例会被赋予一个代理对象，以处理应用程序的生命周期事件（比如程序启动和关闭）、系统事件（比如来电、记事项警告）等等。</p>
+<p>新建一个任意类型的iOS应用工程，我们可以看到工程中生成一个类：<br><code>AppDelegate :UIResponder &lt;UIApplicationDelegate&gt;</code><br>这里这个类的基类是<code>UIResponder</code>(注：iOS 4.2以前生成的工程是不同的，以前是继承自<code>NSObject</code>)。不论如何，本类实现了一个名叫<code>UIApplicationDelegate</code>的接口，这个表明这个类就是这个工程中<code>UIApplication</code>实例的代理类。</p>
+<p>在<code>main</code>函数中，</p>
+<pre><code>int main(int argc, char * argv[]) {
+    @autoreleasepool {
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
+}
+</code></pre><p>这里传入了代理类到<code>UIApplicationMain</code>函数中，<code>UIApplicationMain</code>函数在生成唯一个<code>UIApplication</code>的时候就可以把代理类的实例指针告诉这个单例对象了。</p>
+<p>［注］参数说明<br><code>argc</code>:系统或者用户传入的参数<br><code>argv</code>:系统或用户传入的实际参数<br>1.根据传入的第三个参数，创建<code>UIApplication</code><strong>对象</strong><br>2.根据传入的第四个产生创建<code>UIApplication</code><strong>对象的代理</strong><br>3.设置刚刚创建出来的代理对象为<code>UIApplication</code>的代理<br>4.开启一个事件循环（可以理解为里面是一个死循环）这个时间循环是一个队列（先进先出）先添加进去的先处理</p>
+<h2 id="UIApplication生命周期"><a href="#UIApplication生命周期" class="headerlink" title="UIApplication生命周期"></a>UIApplication生命周期</h2><p>1、</p>
+<pre><code>-  (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+</code></pre><p>说明：当应用程序正常启动时（不包括已在后台转到前台的情况），调用此回调。<code>launchOptions</code>是启动参数，假如用户通过点击push通知启动的应用，(这是非正常启动的情况，包括本地通知和远程通知)，这个参数里会存储一些push通知的信息。</p>
+<p>2、</p>
+<pre><code>- (void)applicationWillResignActive:(UIApplication *)application
+</code></pre><p>说明：当应用程序将要入非活动状态执行，在此期间，应用程序不接收消息或事件，比如来电话了</p>
+<p>3、</p>
+<pre><code>- (void)applicationDidBecomeActive:(UIApplication *)application
+</code></pre><p>说明：当应用程序入活动状态执行，这个刚好跟上面那个方法相反</p>
+<p>4、  </p>
+<pre><code>- (void)applicationDidEnterBackground:(UIApplication *)application
+</code></pre><p>说明：当程序被推送到后台的时候调用。所以要设置后台继续运行，则在这个函数里面设置即可</p>
+<p>5、</p>
+<pre><code>- (void)applicationWillEnterForeground:(UIApplication *)application
+</code></pre><p>说明：当程序从后台将要重新回到前台时候调用，这个刚好跟4相反。</p>
+<p>6、</p>
+<pre><code>- (void)applicationWillTerminate:(UIApplication *)application
+</code></pre><p>说明：当程序将要退出是被调用，通常是用来保存数据和一些退出前的清理工作。这个需要要设置<code>UIApplicationExitsOnSuspend</code>的键值。</p>
+<p>7、</p>
+<pre><code>- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+</code></pre><p>说明：iPhone设备只有有限的内存，如果为应用程序分配了太多内存操作系统会终止应用程序的运行，在终止前会执行这个方法，通常可以在这里进行内存清理工作防止程序被终止</p>
+<p>8、</p>
+<pre><code>- (void)applicationSignificantTimeChange:(UIApplication*)application
+</code></pre><p>说明：当系统时间发生改变时执行</p>
+<p>9、</p>
+<pre><code>- (void)applicationDidFinishLaunching:(UIApplication*)application
+</code></pre><p>说明：当程序载入后执行</p>
+<p>10、</p>
+<pre><code>- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+</code></pre><p>说明：当客户端注册远程通知时，会回调的方法。<br>如果成功，则回调这个方法，客户端把<code>deviceToken</code>取出来发给服务端，push消息的时候要用。<br>如果失败了，则回调下面的方法，可以从<code>error</code>参数中看一下失败原因。</p>
+<pre><code>- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+</code></pre><p>11、</p>
+<pre><code>- (void)application:(UIApplication)application willChangeStatusBarFrame:(CGRect)newStatusBarFrame
+</code></pre><p>说明：当StatusBar框将要变化时执行</p>
+<pre><code>- (void)application:(UIApplication*)application willChangeStatusBarOrientation:(UIInterfaceOrientation)newStatusBarOrientationduration:(NSTimeInterval)duration
+</code></pre><p>说明：当StatusBar框方向将要变化时执行</p>
+<pre><code>- (void)application:(UIApplication *)application didChangeStatusBarOrientation:(UIInterfaceOrientation)oldStatusBarOrientation
+</code></pre><p>说明：当StatusBar框方向变化完成后执行</p>
+<pre><code>- (void)application:(UIApplication*)application didChangeSetStatusBarFrame:(CGRect)oldStatusBarFrame
+</code></pre><p>说明：当StatusBar框变化完成后执行</p>
+<p>12、</p>
+<pre><code>- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+</code></pre><p>说明：当通过url执行 </p>
+<p>13、</p>
+<pre><code>- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+</code></pre><p>说明：当应用在前台运行中，收到远程通知时(不会弹出系统通知界面)，会回调这个方法。<br>当应用在后台状态时，点击push消息启动应用，也会回调这个方法。<br>当应用完全没有启动时，点击push消息启动应用，就不会回调这个方法。</p>
+<pre><code>- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler
+</code></pre><p>与上一方法相同，区别是在后台时亦可执行方法，但要开启相关权限。如图。<br><img src="http://upload-images.jianshu.io/upload_images/1378903-c7a0ada4f511a5d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="开启权限"></p>
+<pre><code>-  (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+</code></pre><p>说明：当应用收到本地通知时会调这个方法，同上面一个方法类似。<br>如果在前台运行状态直接调用<br>如果在后台状态，点击通知启动时，也会回调这个方法<br>当应用完全没有启动时，点击push消息启动应用，就不会回调这个方法。</p>
+<p><strong>［补充］</strong>1.iPhone中的应用程序很容易受到打扰，比如一个来电可能导致应用程序失去焦点，如果这个时候接听了电话，那么应用程序会转到后台运行。还有很多其它类似的事件会导致iPhone应用程序失去焦点，在应用程序失去焦点前会调用委托类的<code>applicationWillResignActive()</code>方法，而应用程序再次获取到焦点的时候会调用<code>applicationDidBecomeActive()</code>方法。比如在运行应用程序的时候锁屏会调用委托类的<code>applicationWillResignActive()</code>方法，而当屏幕被解锁的时候，又会调用<code>applicationDidBecomeActive()</code>方法。</p>
+<p>2.另外一个非常重要的方法就是<code>applicationDidReceiveMemoryWarning()</code>，因为iPhone设备只有有限的内存，如果为应用程序分配了太多内存操作系统会终止应用程序的运行，但在终止之前操作系统会通过先调用委托类的<code>applicationDidReceiveMemoryWarning()</code>方法警告应用程序，在<code>UIApplication</code>接收到这个事件后它会传递给委托类的<code>applicationDidReceiveMemoryWarning()</code>方法，委托类在这个方法内可以进行释放内存的操作以防止操作系统强制终止应用程序的运行。</p>
+<h2 id="UIApplication部分常用功能"><a href="#UIApplication部分常用功能" class="headerlink" title="UIApplication部分常用功能"></a>UIApplication部分常用功能</h2><p>1.设置icon上的数字图标，缺省为0</p>
+<pre><code>[UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+</code></pre><p>2.设置摇动手势的时候，是否支持redo,undo操作，缺省YES</p>
+<pre><code>[UIApplication sharedApplication].applicationSupportsShakeToEdit =YES;
+</code></pre><p>3.判断程序运行状态</p>
+<pre><code>typedef NS_ENUM(NSInteger, UIApplicationState) {
+    UIApplicationStateActive, 
+    UIApplicationStateInactive,
+    UIApplicationStateBackground
+} NS_ENUM_AVAILABLE_IOS(4_0);
+
+if([UIApplicationsharedApplication].applicationState ==UIApplicationStateInactive){
+    NSLog(@&quot;程序在运行状态&quot;);
+ }
+</code></pre><p>4.阻止屏幕变暗进入休眠状态，缺省为no </p>
+<pre><code>[UIApplication sharedApplication].idleTimerDisabled =YES;
+</code></pre><p><strong>［注意⚠️］</strong>除视频播放等需要常亮等功能外，慎重使用本功能，因为<strong>非常耗电</strong>。</p>
+<p>5.显示联网状态动画</p>
+<pre><code>[UIApplication sharedApplication].networkActivityIndicatorVisible =YES;
+</code></pre><p>6.设置状态栏的样式</p>
+<pre><code>typedef NS_ENUM(NSInteger, UIStatusBarStyle) {
+    UIStatusBarStyleDefault   = 0, // 默认样式，黑字，适用于浅色背景（iOS6及以下系统状态栏为黑底白字）
+    UIStatusBarStyleLightContent     NS_ENUM_AVAILABLE_IOS(7_0) = 1, // 白字，适用于深色背景
+    UIStatusBarStyleBlackTranslucent NS_ENUM_DEPRECATED_IOS(2_0, 7_0, &quot;Use UIStatusBarStyleLightContent&quot;) = 1,// 白字（iOS6及以下系统在启动界面为灰底白字，iOS7及以上系统与UIStatusBarStyleBlackOpaque效果一样）
+    UIStatusBarStyleBlackOpaque      NS_ENUM_DEPRECATED_IOS(2_0, 7_0, &quot;Use UIStatusBarStyleLightContent&quot;) = 2,// 白字，适用于深色背景（iOS6及以下系统状态栏为黑底白字）
+} __TVOS_PROHIBITED;
+
+[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+</code></pre><p>隐藏状态栏</p>
+<pre><code>[UIApplication sharedApplication].statusBarHidden = YES;
+</code></pre><p>7.调用系统功能<br>openURL是<code>UIApplication</code>中一个非常强大的方法，使用其可以调用系统相关功能。其方法有</p>
+<pre><code>- (BOOL)openURL:(NSURL*)url ;
+- (BOOL)canOpenURL:(NSURL *)url ;
+</code></pre><p>［注］在iOS10后新增<code>- (void)openURL:(NSURL*)url options:(NSDictionary&lt;NSString *, id&gt; *)options completionHandler:(void (^ __nullable)(BOOL success))completion</code>方法</p>
+<p>常用方法有：</p>
+<p>（1）发送电子邮件</p>
+<pre><code> NSString *recipients =@&quot;mailto:first@example.com?cc=second@example.com,third@example.com&amp;subject=Hello from California!&quot;;
+ NSString *body =@&quot;&amp;body=It is raining in sunny California!&quot;;
+ NSString *email = [NSString  stringWithFormat:@&quot;%@%@&quot;, recipients, body];
+ email = [email stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+[[UIApplication sharedApplication]openURL:[NSURL URLWithString:email]];
+</code></pre><p>（2）打电话</p>
+<pre><code>[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;tel://1234567890&quot;]];
+</code></pre><p>（3）发送短信</p>
+<pre><code>[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;sms://466453&quot;]];
+</code></pre><p>（4）打开一个网址</p>
+<pre><code>[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;http://itunesconnect.apple.com&quot;]];
+</code></pre><p><strong>［补充］</strong> 打开网址的操作通常用于跳转app store，iOS给好评时一般会直接打开app store应用详情界面，其实也可以直接跳转到评论页面，更有利于引导用户打分和评论。（将下面id改成自己的app id即可）</p>
+<pre><code>[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=id1128294199&amp;pageNumber=0&amp;sortOrdering=2&amp;type=Purple+Software&amp;mt=8&quot;]];
+</code></pre><p>直接跳转到详情</p>
+<pre><code>https://itunes.apple.com/cn/app/jia-zhang-mu-ke/id1128294199?mt=8
+</code></pre><p>8.推送相关<br>注册推送</p>
+<pre><code>[[UIApplication sharedApplication]registerUserNotificationSettings:setting];
+</code></pre><p>移除推送</p>
+<pre><code>[[UIApplication sharedApplication] cancelAllLocalNotifications];
+</code></pre><p>添加推送</p>
+<pre><code>[[UIApplication sharedApplication]  scheduleLocalNotification:notification];
+</code></pre><p>更多内容会陆续补充，欢迎参考指正。</p>
+<h2 id="文章参考"><a href="#文章参考" class="headerlink" title="文章参考"></a>文章参考</h2><p>1.<a href="http://www.cnblogs.com/pengyingh/articles/2342014.html" target="_blank" rel="external">UIApplication深入研究－博客园</a><br>2.<a href="http://www.cnblogs.com/wendingding/p/3766347.html" target="_blank" rel="external">iOS开发UI篇—程序启动原理－博客园</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/01/iOS_screen_cut_3/" rel="next" title="iOS截图（3）截取网页片段">
+                <i class="fa fa-chevron-left"></i> iOS截图（3）截取网页片段
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/28/iOS_issues_3/" rel="prev" title="iOS 开发中遇到的问题（Xcode篇）">
+                iOS 开发中遇到的问题（Xcode篇） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+       
+         <div onclick="ShowGitment()" id="gitment-display-button">显示精彩评论</div>
+         <div id="gitment-container" style="display:none"></div>
+       
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="刘 琦" />
+          <p class="site-author-name" itemprop="name">刘 琦</p>
+           
+              <p class="site-description motion-element" itemprop="description">写写代码，聊聊生活</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">博客</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/KeyLiu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1692704124" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/Lukey678" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/e261bc969874" target="_blank" title="Jianshu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简述UIApplication"><span class="nav-number">1.</span> <span class="nav-text">简述UIApplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIApplication生命周期"><span class="nav-number">2.</span> <span class="nav-text">UIApplication生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIApplication部分常用功能"><span class="nav-number">3.</span> <span class="nav-text">UIApplication部分常用功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章参考"><span class="nav-number">4.</span> <span class="nav-text">文章参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘 琦</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 提供
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+  
+
+    
+
+   
+        <!-- UY BEGIN -->
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+        <!-- UY END -->
+    
+  
+
+
+  
+
+
+
+
+
+
+   
+   
+   
+   
+   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: document.location.href,
+                   owner: 'KeyLiu',
+                   repo: 'keyliu_gitment',
+                   oauth: {
+                       client_id: '5fde4b043660c68a3975',
+                       client_secret: '13e9746e81cefbc2f437d0dde861ed87cdd306bc',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("74eoHIMeRxoeT9OLH3Wca5oB-gzGzoHsz", "saDIOiNLRqeIGH90uCSSQtaN");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
