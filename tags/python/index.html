@@ -357,8 +357,8 @@
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
-               alt="刘 琦" />
-          <p class="site-author-name" itemprop="name">刘 琦</p>
+               alt="KeyLiu" />
+          <p class="site-author-name" itemprop="name">KeyLiu</p>
            
               <p class="site-description motion-element" itemprop="description">写写代码，聊聊生活</p>
           
@@ -368,7 +368,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -474,7 +474,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">刘 琦</span>
+  <span class="author" itemprop="copyrightHolder">KeyLiu</span>
 </div>
 
 
@@ -608,30 +608,6 @@
 
 
 
-   
-   
-   
-   
-   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: document.location.href,
-                   owner: 'KeyLiu',
-                   repo: 'keyliu_gitment',
-                   oauth: {
-                       client_id: '5fde4b043660c68a3975',
-                       client_secret: '13e9746e81cefbc2f437d0dde861ed87cdd306bc',
-                   }});
-               gitment.render('gitment-container');
-           }
-       </script>
-   
-
 
 
   
@@ -752,6 +728,28 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
 
   
 
