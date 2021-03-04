@@ -119,7 +119,7 @@
 
 
 若输入$[4,">
-<meta property="og:updated_time" content="2020-07-15T01:51:47.192Z">
+<meta property="og:updated_time" content="2020-07-15T05:35:59.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="leetcode刷题笔记｜数学位运算">
 <meta name="twitter:description" content="本文记录LeetCode刷题一些知识点，水平有限还望多多指正
@@ -438,7 +438,7 @@
 <p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现了<strong>三</strong>次。找出那个只出现了一次的元素。</p>
 </blockquote>
 <p>根据以下公式，3次时自动抵消归零。</p>
-<p>$$x \&amp; \sim x=0 \<br>x \&amp; \sim 0=x \$$</p>
+<p>$$x \&amp; \sim x=0 \<br>x \&amp; \sim 0=x $$</p>
 <pre><code>class Solution:
     def singleNumber(self, nums: List[int]) -&gt; int:
         a, b = 0, 0
@@ -467,7 +467,27 @@
 <blockquote>
 <p>给定一个包含 0, 1, 2, …, n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。</p>
 </blockquote>
-<p>若输入$[0,1,3,4]$,其中i为下标，num为数值，将其异或运算，该题就变成了数组中只有一个数字出现一次，如表<br>i|0|1|2|3<br>:-:|:-:|:-:|:-:|:-:<br>num|0|1|3|4</p>
+<p>若输入$[0,1,3,4]$,其中i为下标，num为数值，将其异或运算，该题就变成了数组中只有一个数字出现一次，如表</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">num</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+</tr>
+</tbody>
+</table>
 <p>可以将结果的初始值设为n，再对数组中的每一个数以及它的下标进行一个异或运算，即：</p>
 <p>$$res=4∧(0∧0)∧(1∧1)∧(2∧3)∧(3∧4)\=(4∧4)∧(0∧0)∧(1∧1)∧(3∧3)∧2\<br>=0∧0∧0∧0∧2\<br>=2$$<br>即为所求</p>
 <pre><code>class Solution:
@@ -695,7 +715,7 @@ print(-1 &amp; 0xffffffff) # = 4294967295 （ Python 将其认为正数）
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -706,7 +726,7 @@ print(-1 &amp; 0xffffffff) # = 4294967295 （ Python 将其认为正数）
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -717,7 +737,7 @@ print(-1 &amp; 0xffffffff) # = 4294967295 （ Python 将其认为正数）
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -813,7 +833,7 @@ print(-1 &amp; 0xffffffff) # = 4294967295 （ Python 将其认为正数）
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
